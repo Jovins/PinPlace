@@ -41,7 +41,7 @@ class PlacesMapViewController: UIViewController {
         subscribeOnNotifications()
         setupMapForUpdatingUserLocation()
 
-        longPressGestureRecognizer.rx.event.bindNext { [unowned self] longPressGesture in
+        longPressGestureRecognizer.rx.event.bind { [unowned self] longPressGesture in
             if longPressGesture.state != .ended {
                 return
             }
@@ -50,16 +50,16 @@ class PlacesMapViewController: UIViewController {
             self.viewModel.appendPlaceWithCoordinate(touchLocationCoordinate2D)
             self.mapView.addAnnotation(self.viewModel.places.value.last!)
 
-        }.addDisposableTo(disposeBag)
+            }.disposed(by: disposeBag)
 
-        mapView.rx.annotationViewCalloutAccessoryControlTapped.bindNext { [unowned self] view, _ in
+        mapView.rx.annotationViewCalloutAccessoryControlTapped.bind { [unowned self] view, _ in
             if view.annotation is Place {
                 self.mapView.deselectAnnotation(view.annotation, animated: false)
                 self.performSegue(withIdentifier: SegueIdentifier.showPlaceDetails.rawValue, sender: view.annotation)
             }
-        }.addDisposableTo(disposeBag)
+            }.disposed(by: disposeBag)
 
-        mapView.rx.didUpdateUserLocation.bindNext { [unowned self] _ in
+        mapView.rx.didUpdateUserLocation.bind { [unowned self] _ in
             guard let userLocation = self.mapView.userLocation.location else { return }
             let coordinateSpan = MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)
             let locationCoordinate = CLLocationCoordinate2D(latitude: userLocation.coordinate.latitude,
@@ -67,20 +67,20 @@ class PlacesMapViewController: UIViewController {
             self.viewModel.userLocationCoordinate2D = locationCoordinate
             let region = MKCoordinateRegion(center: locationCoordinate, span: coordinateSpan)
             self.mapView.setRegion(region, animated: true)
-        }.addDisposableTo(disposeBag)
+            }.disposed(by: disposeBag)
 
-        routeBarButtonItem.rx.tap.bindNext { [unowned self] in
+        routeBarButtonItem.rx.tap.bind { [unowned self] in
             switch self.appMode {
             case .default:
                 self.performSegue(withIdentifier: SegueIdentifier.showPopover.rawValue, sender: self)
             case .routing:
                 self.switchAppToNormalMode()
             }
-        }.addDisposableTo(disposeBag)
+            }.disposed(by: disposeBag)
 
         viewModel.places.asDriver().drive(onNext: { [weak self] placesAnnotations in
             self?.mapView.addAnnotations(placesAnnotations)
-        }).addDisposableTo(disposeBag)
+        }).disposed(by: disposeBag)
 
         viewModel.currentRouteMKDirectionsResponse.asDriver().drive(onNext: { [weak self] mkDirectionsResponse in
             guard let weakSelf = self else { return }
@@ -101,7 +101,7 @@ class PlacesMapViewController: UIViewController {
                 weakSelf.mapView.removeAnnotations(weakSelf.mapView.annotations)
                 weakSelf.mapView.removeOverlays(weakSelf.mapView.overlays)
             }
-        }).addDisposableTo(disposeBag)
+        }).disposed(by: disposeBag)
 
     }
 

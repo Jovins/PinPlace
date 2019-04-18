@@ -32,14 +32,14 @@ class PlacesPopoverTableViewController: UIViewController {
                 .drive(tableView.rx.items(cellIdentifier: PlaceTableViewCell.reuseIdentifier,
                                           cellType: PlaceTableViewCell.self)) { _, place, cell in
                     cell.placeTitleLabel.text = place.title
-                }.addDisposableTo(disposeBag)
+            }.disposed(by: disposeBag)
 
-        tableView.rx.itemSelected.bindNext { [unowned self] indexPath in
+        tableView.rx.itemSelected.bind { [unowned self] indexPath in
             if let placesMapVC = self.popoverPresentationController?.delegate as? PlacesMapViewController {
                 placesMapVC.viewModel.selectedTargetPlace = self.viewModel.places.value[indexPath.row]
                 NotificationCenter.default.post(name: .buildRoute, object: nil)
             }
             self.dismiss(animated: true, completion: nil)
-        }.addDisposableTo(disposeBag)
+            }.disposed(by: disposeBag)
     }
 }

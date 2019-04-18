@@ -22,10 +22,10 @@ final class PlaceDetailsViewModel {
 
     func fetchNearbyPlaces(_ completion: (() -> Void)? = nil) {
         if let place = place {
-            foursquareWebService.fetchNearbyFoursqareVenues(forPlace: place).bindNext {[unowned self] venuesArray  in
+            foursquareWebService.fetchNearbyFoursqareVenues(forPlace: place).bind {[unowned self] venuesArray  in
                 completion?()
                 self.nearbyVenues.value = venuesArray
-            }.addDisposableTo(disposeBag)
+                }.disposed(by: disposeBag)
         }
     }
 

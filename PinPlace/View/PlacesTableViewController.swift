@@ -33,28 +33,28 @@ class PlacesTableViewController: UIViewController {
                 .drive(tableView.rx.items(cellIdentifier: PlaceTableViewCell.reuseIdentifier,
                                           cellType: PlaceTableViewCell.self)) { (_, place, cell) in
                     cell.placeTitleLabel.text = place.title
-                }.addDisposableTo(disposeBag)
+            }.disposed(by: disposeBag)
 
-        tableView.rx.itemSelected.bindNext { [unowned self] indexPath in
+        tableView.rx.itemSelected.bind { [unowned self] indexPath in
             self.tableView.deselectRow(at: indexPath, animated: true)
             self.performSegue(withIdentifier: SegueIdentifier.showPlaceDetails.rawValue,
                               sender: self.viewModel.places.value[indexPath.row])
-        }.addDisposableTo(disposeBag)
+            }.disposed(by: disposeBag)
 
-        tableView.rx.itemDeleted.bindNext { [unowned self] indexPath in
+        tableView.rx.itemDeleted.bind { [unowned self] indexPath in
             if let place = try? self.tableView.rx.model(at: indexPath) as Place {
                 NotificationCenter.default.post(name: .placeDeleted, object: place)
                 self.viewModel.deletePlace(place)
             }
-        }.addDisposableTo(disposeBag)
+            }.disposed(by: disposeBag)
 
         searchBar
                 .rx.text
                 .throttle(0.5, scheduler: MainScheduler.instance)
-                .bindNext { [unowned self] (query) in
+            .bind { [unowned self] (query) in
                     self.viewModel.findPlacesByName(query!)
                 }
-                .addDisposableTo(disposeBag)
+            .disposed(by: disposeBag)
 
     }
 

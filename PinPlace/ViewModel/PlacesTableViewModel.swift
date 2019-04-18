@@ -12,7 +12,7 @@ final class PlacesTableViewModel: PlacesViewModel {
 
     func deletePlace(_ place: Place) {
         PlacesDataController.sharedInstance.deletePlace(place)
-        self.places.value.remove(at: self.places.value.index(of: place)!)
+        self.places.value.remove(at: self.places.value.firstIndex(of: place)!)
     }
 
     func findPlacesByName(_ searchQuery: String) {
