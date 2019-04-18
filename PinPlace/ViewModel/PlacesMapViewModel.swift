@@ -19,7 +19,7 @@ final class PlacesMapViewModel: PlacesViewModel {
     var selectedTargetPlace: Place?
     private let routeCalculator = RouteCalculator()
     fileprivate let locationManager = CLLocationManager()
-    fileprivate(set) var currentRouteMKDirectionsResponse = Variable<MKDirectionsResponse?>(MKDirectionsResponse())
+    fileprivate(set) var currentRouteMKDirectionsResponse = Variable<MKDirections.Response?>(MKDirections.Response())
 
     // MARK: - Methods
 

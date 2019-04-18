@@ -85,12 +85,12 @@ class PlacesMapViewController: UIViewController {
         viewModel.currentRouteMKDirectionsResponse.asDriver().drive(onNext: { [weak self] mkDirectionsResponse in
             guard let weakSelf = self else { return }
             if let mkDirectionsResponse = mkDirectionsResponse {
-                var totalRect = MKMapRectNull
+                var totalRect = MKMapRect.null
                 for route in mkDirectionsResponse.routes {
-                    weakSelf.mapView.add(route.polyline, level: .aboveRoads)
+                    weakSelf.mapView.addOverlay(route.polyline, level: .aboveRoads)
                     let polygon = MKPolygon(points: route.polyline.points(), count: route.polyline.pointCount)
                     let routeRect = polygon.boundingMapRect
-                    totalRect = MKMapRectUnion(totalRect, routeRect)
+                    totalRect = totalRect.union(routeRect)
                 }
                 weakSelf.mapView.setVisibleMapRect(totalRect, edgePadding: UIEdgeInsets(top: 30,
                                                                                         left: 30,

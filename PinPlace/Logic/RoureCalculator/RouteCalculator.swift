@@ -25,7 +25,7 @@ final class RouteCalculator {
 
     func calculateRoute(from startCoordinate: CLLocationCoordinate2D?,
                         to finishCoordinate: CLLocationCoordinate2D?,
-                        completion: @escaping ((MKDirectionsResponse?, NSError?) -> Void)) throws {
+                        completion: @escaping ((MKDirections.Response?, NSError?) -> Void)) throws {
 
         guard let finishCoordinate = finishCoordinate else {
             completion(nil, RouteCalculatorError.destinationCoordinateMissed as NSError?)
@@ -39,7 +39,7 @@ final class RouteCalculator {
 
         dismissCurrentRoute()
 
-        let directionsRequest = MKDirectionsRequest()
+        let directionsRequest = MKDirections.Request()
         directionsRequest.source = MKMapItem.forCurrentLocation()
         directionsRequest.requestsAlternateRoutes = false
 
