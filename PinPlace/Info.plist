@@ -2,10 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>PinPlace need your loacation for the best experience.</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>PinPlace need your loacation for the best experience.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleExecutable</key>
@@ -31,8 +27,12 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>PinPlace need your loacation for the best experience.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>PinPlace would like to use your location.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>PinPlace need your loacation for the best experience.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

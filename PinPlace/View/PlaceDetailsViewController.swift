@@ -40,7 +40,9 @@ class PlaceDetailsViewController: UIViewController {
         loadNearbyPlacesButton.rx.tap.bind { [unowned self] in
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
             self.viewModel.fetchNearbyPlaces() {
-                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                DispatchQueue.main.async {
+                     UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                }
             }
             }.disposed(by: disposeBag)
 
@@ -88,3 +90,6 @@ class PlaceDetailsViewController: UIViewController {
     }
 
 }
+
+extension PlaceDetailsViewController: UITableViewDelegate {}
+
